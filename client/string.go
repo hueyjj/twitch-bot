@@ -1,12 +1,12 @@
 package client
 
 const helpStr = `
-!help -- displays this help menu
-!roll -- roll a number between 0 and 100
-!hello -- says hi
-!bestgirl -- ?
-!random -- this bot says something random
-!links -- list my links
+!help (displays this help menu)
+!roll (roll a number between 0 and 100)
+!hello (says hi)
+!bestgirl (?)
+!random (this bot says something random)
+!links (list my links)
 `
 
 var hello = map[int]string{
@@ -26,6 +26,7 @@ var hello = map[int]string{
 var bestgirlStr = `
 you
 `
+
 var random = map[int]string{
 	0:  "a cow has multiple stoma",
 	1:  "cat heart beats 2x the rate of human's",

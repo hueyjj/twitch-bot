@@ -1,11 +1,15 @@
 package client
 
 import (
+	"fmt"
 	"github.com/gorilla/websocket"
 	"log"
+	"math/rand"
 	"net/url"
 	"os"
 	"os/signal"
+	"strconv"
+	"strings"
 	"time"
 )
 
@@ -46,11 +50,35 @@ func Run(serverAddr string, client *Client) {
 			msg := string(message)
 			log.Println(">", msg)
 
-			username, err := ParseUsername(msg)
-			if err != nil {
-				log.Println("ParseUsername:", err)
+			if IsChannelMessage(msg) {
+				username, err := ParseUsername(msg)
+				if err != nil {
+					log.Println("ParseUsername:", err)
+				}
+
+				cmd := ParseCommand(msg)
+				switch cmd {
+				case "!help":
+					msg := fmt.Sprintf("@%s, here is list of commands. %s", username, helpStr)
+					SendMessage(ChannelMessage(client.ChannelName, msg), client)
+				case "!roll":
+					n := rand.Intn(100)
+					SendMessage(ChannelMessage(client.ChannelName, strconv.Itoa(n)), client)
+				case "!hello":
+					n := rand.Intn(100) / 10
+					SendMessage(ChannelMessage(client.ChannelName, hello[n]), client)
+				case "!bestgirl":
+					SendMessage(ChannelMessage(client.ChannelName, bestgirlStr), client)
+				case "!random":
+					n := rand.Intn(100) / 10
+					SendMessage(ChannelMessage(client.ChannelName, random[n]), client)
+				case "!links":
+					msg := strings.Join(links, "\n")
+					SendMessage(ChannelMessage(client.ChannelName, msg), client)
+				default:
+					// Do nothing
+				}
 			}
-			log.Println("username=", username)
 		}
 	}()
 
