@@ -69,8 +69,6 @@ func Run(serverAddr string, client *Client) {
 	SendMessage(AuthMessage(client.OAuthToken), client)
 	SendMessage(NickMessage(client.BotUsername), client)
 	SendMessage(JoinMessage(client.ChannelName), client)
-	//ticker := time.NewTicker(time.Second)
-	//defer ticker.Stop()
 
 	//authMsg := fmt.Sprintf("PASS %s", oAuthToken)
 	//log.Printf("< %s\n", authMsg)
@@ -93,19 +91,17 @@ func Run(serverAddr string, client *Client) {
 	//	log.Println("Join channel message:", err)
 	//}
 
+	ticker := time.NewTicker(time.Minute)
+	defer ticker.Stop()
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
 	for {
 		select {
 		case <-done:
 			return
-		//case t := <-ticker.C:
-
-		//err := c.WriteMessage(websocket.TextMessage, []byte(t.String()))
-		//if err != nil {
-		//	log.Println("write:", err)
-		//	return
-		//}
+		case <-ticker.C:
+			// Every minute send a PONG message to keep connection alive
+			SendMessage(PongMessage, client)
 		case <-interrupt:
 			log.Println("interrupt")
 
