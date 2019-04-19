@@ -8,4 +8,7 @@ test:
 	
 build:
 	mkdir -p $(CURDIR)/$(BINARY_PATH)
-	go build -o $(CURDIR)/$(MODULE_BINARY_PATH)/$(BINARY_NAME) main.go
+	go build -o $(CURDIR)/$(BINARY_PATH)/$(BINARY_NAME) main.go
+
+clean:
+	rm $(CURDIR)/$(BINARY_PATH)/$(BINARY_NAME)
