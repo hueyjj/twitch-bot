@@ -9,6 +9,7 @@ import (
 	"net/url"
 	"os"
 	"os/signal"
+	"regexp"
 	"time"
 )
 
@@ -48,6 +49,7 @@ func main() {
 
 	done := make(chan struct{})
 
+	re := regexp.MustCompile(`[#].*:`)
 	go func() {
 		defer close(done)
 		for {
@@ -57,6 +59,18 @@ func main() {
 				return
 			}
 			log.Printf("> %s", message)
+
+			if match := re.Find([]byte(message)); match != nil {
+				username := string(match)
+				username = username[1 : len(username)-1]
+				log.Printf("username=%s\n", username)
+				respMsg := fmt.Sprintf("PRIVMSG #%s :Your waifu is trash. %s", channelName, username)
+				log.Printf("< %s\n", respMsg)
+				err = c.WriteMessage(websocket.TextMessage, []byte(respMsg))
+				if err != nil {
+					log.Println("Auth msg:", err)
+				}
+			}
 		}
 	}()
 
@@ -64,19 +78,24 @@ func main() {
 	defer ticker.Stop()
 
 	authMsg := fmt.Sprintf("PASS %s", oAuthToken)
+	log.Printf("< %s\n", authMsg)
 	err = c.WriteMessage(websocket.TextMessage, []byte(authMsg))
 	if err != nil {
-		log.Println("OAuth Pass:", err)
-	} else {
-		log.Printf("< %s\n", authMsg)
+		log.Println("Auth msg:", err)
 	}
 
 	nickMsg := fmt.Sprintf("NICK %s", botUsername)
+	log.Printf("< %s\n", nickMsg)
 	err = c.WriteMessage(websocket.TextMessage, []byte(nickMsg))
 	if err != nil {
-		log.Println("OAuth Pass:", err)
-	} else {
-		log.Printf("< %s\n", nickMsg)
+		log.Println("Nick message:", err)
+	}
+
+	joinChannelMsg := fmt.Sprintf("JOIN #%s", channelName)
+	log.Printf("< %s\n", joinChannelMsg)
+	err = c.WriteMessage(websocket.TextMessage, []byte(joinChannelMsg))
+	if err != nil {
+		log.Println("Join channel message:", err)
 	}
 
 	for {
