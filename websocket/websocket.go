@@ -1,9 +1,9 @@
-package irc
+package websocket
 
 import (
 	"fmt"
 )
 
-func PrintIrc() {
+func PrintWebsocket() {
 	fmt.Printf("Hello\n")
 }
