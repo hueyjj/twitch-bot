@@ -51,18 +51,6 @@ func Run(serverAddr string, client *Client) {
 				log.Println("ParseUsername:", err)
 			}
 			log.Println("username=", username)
-
-			//if match := re.Find([]byte(message)); match != nil {
-			//	username := string(match)
-			//	username = username[1 : len(username)-1]
-			//	log.Printf("username=%s\n", username)
-			//	//respMsg := fmt.Sprintf("PRIVMSG #%s :Your waifu is trash. %s", channelName, username)
-			//	log.Printf("< %s\n", respMsg)
-			//	err = c.WriteMessage(websocket.TextMessage, []byte(ChannelMessage(channelName, username)))
-			//	if err != nil {
-			//		log.Println("Auth msg:", err)
-			//	}
-			//}
 		}
 	}()
 
@@ -70,31 +58,11 @@ func Run(serverAddr string, client *Client) {
 	SendMessage(NickMessage(client.BotUsername), client)
 	SendMessage(JoinMessage(client.ChannelName), client)
 
-	//authMsg := fmt.Sprintf("PASS %s", oAuthToken)
-	//log.Printf("< %s\n", authMsg)
-	//err = c.WriteMessage(websocket.TextMessage, []byte(authMsg))
-	//if err != nil {
-	//	log.Println("Auth msg:", err)
-	//}
-
-	//nickMsg := fmt.Sprintf("NICK %s", botUsername)
-	//log.Printf("< %s\n", nickMsg)
-	//err = c.WriteMessage(websocket.TextMessage, []byte(nickMsg))
-	//if err != nil {
-	//	log.Println("Nick message:", err)
-	//}
-
-	//joinChannelMsg := fmt.Sprintf("JOIN #%s", channelName)
-	//log.Printf("< %s\n", joinChannelMsg)
-	//err = c.WriteMessage(websocket.TextMessage, []byte(joinChannelMsg))
-	//if err != nil {
-	//	log.Println("Join channel message:", err)
-	//}
-
 	ticker := time.NewTicker(time.Minute)
 	defer ticker.Stop()
 	interrupt := make(chan os.Signal, 1)
 	signal.Notify(interrupt, os.Interrupt)
+
 	for {
 		select {
 		case <-done:
