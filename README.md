@@ -1,6 +1,9 @@
 # twitch-bot
 A twitch.tv bot where users can play text games and grab statistics.
 
+twitch-bot
+![Twitch-bot](https://raw.githubusercontent.com/hueyjj/twitch-bot/master/screenshots/twitch-bot.PNG)
+
 # Getting Started
 ```bash
 $ git clone github.com/hueyjj/twitch-bot
