@@ -29,3 +29,29 @@ $ ./bin/twitch-bot
 ```bash
 $ make clean
 ```
+
+# Docker
+Build
+```bash
+docker build -t twitch-bot .
+```
+List docker image
+```bash
+docker image ls
+```
+Run
+```bash
+docker run --name twitch-bot twitch-bot
+```
+Stop
+```bash
+docker stop twitch-bot
+```
+Remove container
+```bash
+docker rm twitch-bot
+```
+Remove all inactive or stopped containers
+```bash
+docker rm $(docker ps -aq)
+```
