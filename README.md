@@ -35,22 +35,37 @@ Build
 ```bash
 docker build -t twitch-bot .
 ```
+
 List docker image
 ```bash
 docker image ls
 ```
+
 Run
 ```bash
 docker run --name twitch-bot twitch-bot
 ```
+
+Run in detach mode (from terminal)
+```bash
+docker run -d --name twitch-bot twitch-bot
+```
+
+Attach to terminal
+```bash
+docker attach twitch-bot
+```
+
 Stop
 ```bash
 docker stop twitch-bot
 ```
+
 Remove container
 ```bash
 docker rm twitch-bot
 ```
+
 Remove all inactive or stopped containers
 ```bash
 docker rm $(docker ps -aq)
