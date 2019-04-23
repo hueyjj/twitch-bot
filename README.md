@@ -10,6 +10,12 @@ or
 $ go get -u github.com/hueyjj/twitch-bot
 ```
 
+# Setup .env
+```bash
+BOT_USERNAME=your_username
+CHANNEL_NAME=channel_name_to_join
+OAUTH_TOKEN=generate_token_from_twitch_api
+```
 
 # Running
 ```bash
